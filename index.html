@@ -1,0 +1,1078 @@
+<meta charset="utf-8">
+<title>Kiswendsida & Frères</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,500;100,600;100,700;100,800;120,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+/* Layout : noir d'atelier contre blanc de papier, photographie plein cadre,
+   cartes métiers empilées en sticky, typographie cinétique pilotée au défilement.
+   Colonne de 1180 px, tout retombe en une colonne sous 760 px. */
+:root {
+  /* marque */
+  --ink: #1B2C3E;
+  --black: #05090D;
+  --ink-deep: #0D1822;
+  --steel: #BDCAD3;
+  --copper: #C06A2C;
+  --copper-text: #9E5522;
+  --copper-bright: #E2873D;
+  /* bleu du logo, décliné pour les boutons en relief */
+  --blue: #1B2C3E;
+  --blue-lift: #325475;
+  --blue-edge: #0C1721;
+
+  /* thème clair */
+  --bg: #FFFFFF;
+  --bg-2: #EDF1F4;
+  --fg: #0A121B;
+  --muted: #566B80;
+  --line: #DCE3E9;
+
+  /* surfaces sombres, identiques dans les deux thèmes */
+  --dark: #0D1822;
+  --dark-2: #16263A;
+  --dark-muted: #A9BCCC;
+  --dark-line: #243546;
+
+  --display: 'Archivo', 'Arial Black', system-ui, sans-serif;
+  --text: 'Inter', Arial, system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+  --ease: cubic-bezier(.16, .84, .3, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #070D14;
+    --bg-2: #0E1822;
+    --fg: #EAF0F6;
+    --muted: #9CAFC1;
+    --line: #1F2E3D;
+    --copper-text: #E2873D;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #070D14;
+  --bg-2: #0E1822;
+  --fg: #EAF0F6;
+  --muted: #9CAFC1;
+  --line: #1F2E3D;
+  --copper-text: #E2873D;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--text);
+  font-size: 16.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 90; background: var(--black);
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+::selection { background: var(--copper); color: #fff; }
+
+.grain {
+  position: fixed; inset: 0; z-index: 80; pointer-events: none; opacity: .3;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+/* jauge de défilement */
+.progress {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--copper), var(--copper-bright));
+  z-index: 95; transition: width .08s linear;
+}
+
+.wrap {
+  width: 100%; max-width: 1180px; margin: 0 auto;
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+.band { position: relative; }
+.band > .wrap { padding-block: clamp(60px, 8.5vw, 128px); }
+.band--dark { background: var(--dark); color: #fff; }
+.band--black { background: var(--black); color: #fff; }
+.band--paper { background: var(--bg); color: var(--fg); }
+.band--paper2 { background: var(--bg-2); color: var(--fg); }
+
+h1, h2, h3, h4 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -.022em; text-wrap: balance; }
+h1 { font-size: clamp(38px, 7.6vw, 96px); line-height: .92; font-stretch: 120%; text-transform: uppercase; }
+h2 { font-size: clamp(27px, 4.4vw, 56px); line-height: .98; font-stretch: 120%; text-transform: uppercase; }
+h3 { font-size: clamp(18px, 1.9vw, 23px); line-height: 1.16; font-weight: 700; letter-spacing: -.01em; }
+h4 { font-size: 15px; font-weight: 700; letter-spacing: 0; }
+p { margin: 0; }
+
+.kicker {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: clamp(10px, 2.4vw, 11.5px); letter-spacing: .2em;
+  text-transform: uppercase; color: var(--copper-text); margin-bottom: 18px;
+}
+.kicker::before { content: ""; width: 26px; height: 2px; background: var(--copper); flex: none; }
+.band--dark .kicker, .band--black .kicker, .hero .kicker { color: var(--copper-bright); }
+.lede { font-size: clamp(16px, 1.45vw, 18.5px); color: var(--muted); max-width: 60ch; }
+.band--dark .lede, .band--black .lede { color: var(--dark-muted); }
+
+/* ---------------------------------------------------------------- boutons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 15px 24px; border: 1px solid transparent; border-radius: 2px;
+  font-family: var(--text); font-size: 15px; font-weight: 600; text-decoration: none;
+  cursor: pointer; position: relative; overflow: hidden; white-space: nowrap;
+  transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+}
+.btn > * { position: relative; z-index: 1; }
+.btn:hover { transform: translateY(-2px); }
+.btn:focus-visible { outline: 2px solid var(--copper-bright); outline-offset: 3px; }
+/* bouton en relief, bleu du logo */
+.btn--wa {
+  background: linear-gradient(180deg, var(--blue-lift) 0%, var(--blue) 52%, #16242F 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .34),
+    inset 0 -2px 0 rgba(0, 0, 0, .34),
+    0 5px 0 var(--blue-edge),
+    0 16px 26px -12px rgba(5, 9, 13, .8);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .35);
+  transition: transform .14s var(--ease), box-shadow .14s var(--ease), background .25s var(--ease);
+}
+.btn--wa:hover {
+  background: linear-gradient(180deg, #3A5F84 0%, #203549 52%, #192A38 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .4),
+    inset 0 -2px 0 rgba(0, 0, 0, .34),
+    0 7px 0 var(--blue-edge),
+    0 20px 30px -12px rgba(5, 9, 13, .85);
+}
+.btn--wa:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, .45),
+    0 1px 0 var(--blue-edge),
+    0 6px 12px -8px rgba(5, 9, 13, .8);
+}
+.btn--copper { background: var(--copper); color: #fff; }
+.btn--copper:hover { background: var(--copper-text); }
+.btn--outline { border-color: rgba(255,255,255,.34); color: #fff; }
+.btn--outline:hover { background: #fff; color: var(--black); border-color: #fff; }
+.btn--sm { padding: 10px 16px; font-size: 14px; }
+.btn svg { width: 17px; height: 17px; flex: none; }
+
+/* ----------------------------------------------------------------- entête */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 70;
+  background: rgba(5, 9, 13, .78);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,.09);
+  transition: padding .3s var(--ease), background .3s var(--ease);
+}
+.topbar .wrap { display: flex; align-items: center; gap: 20px; padding-block: 13px; transition: padding-block .3s var(--ease); }
+.topbar.shrunk .wrap { padding-block: 7px; }
+.topbar.shrunk { background: rgba(5, 9, 13, .94); }
+.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+.brand img { height: 40px; width: auto; transition: height .3s var(--ease); }
+.topbar.shrunk .brand img { height: 32px; }
+.brand-text b { display: block; font-family: var(--display); font-weight: 800; font-stretch: 120%; font-size: 15px; color: #fff; line-height: 1; }
+.brand-text span { display: block; font-family: var(--mono); font-size: 9px; letter-spacing: .18em; color: var(--steel); margin-top: 3px; }
+.nav { margin-left: auto; display: flex; align-items: center; gap: 26px; }
+.nav a:not(.btn) { color: rgba(255,255,255,.76); text-decoration: none; font-size: 14px; font-weight: 500; position: relative; padding-block: 4px; }
+.nav a:not(.btn)::after { content: ""; position: absolute; left: 0; bottom: 0; height: 1px; width: 0; background: var(--copper-bright); transition: width .3s var(--ease); }
+.nav a:not(.btn):hover { color: #fff; }
+.nav a:not(.btn):hover::after { width: 100%; }
+@media (max-width: 940px) { .nav a:not(.btn) { display: none; } }
+.lbl-short { display: none; }
+@media (max-width: 640px) {
+  .topbar .wrap { gap: 10px; }
+  .brand img { height: 32px; }
+  .brand-text b { font-size: 13px; }
+  .brand-text span { display: none; }
+  .nav .btn { padding: 9px 14px; font-size: 13.5px; }
+  .lbl-long { display: none; }
+  .lbl-short { display: inline; }
+}
+
+/* ------------------------------------------------------------------- héro */
+.hero { position: relative; background: var(--black); color: #fff; isolation: isolate; overflow: hidden; }
+.hero-media { position: absolute; inset: -8% 0 -8% 0; z-index: -2; will-change: transform; }
+.hero-media img {
+  width: 100%; height: 100%; object-fit: cover; opacity: .66;
+  animation: kenburns 26s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  from { transform: scale(1.06) translate3d(0, 0, 0); }
+  to   { transform: scale(1.16) translate3d(-2%, -1.5%, 0); }
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(to right, rgba(5,9,13,.97) 0%, rgba(5,9,13,.86) 40%, rgba(5,9,13,.28) 100%),
+    linear-gradient(to top, rgba(5,9,13,.99) 2%, rgba(5,9,13,0) 48%);
+}
+.hero .wrap { padding-block: clamp(58px, 11vw, 136px) 0; }
+.hero h1 { max-width: 16ch; }
+.hero h1 em { font-style: normal; color: var(--copper-bright); }
+.ln { display: block; overflow: hidden; }
+.ln > span { display: block; animation: rise .9s var(--ease) both; }
+.ln:nth-child(2) > span { animation-delay: .07s; }
+.ln:nth-child(3) > span { animation-delay: .14s; }
+@keyframes rise { from { transform: translateY(16%); } to { transform: none; } }
+.hero-sub { margin-top: 26px; max-width: 54ch; font-size: clamp(16px, 1.5vw, 19px); color: #D5DEE6; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+.hero-foot {
+  margin-top: clamp(40px, 6vw, 80px); display: flex; flex-wrap: wrap; gap: 16px 44px;
+  padding-top: 26px; border-top: 1px solid rgba(255,255,255,.18);
+}
+.hero-foot div { min-width: 0; }
+.hero-foot b { display: block; font-family: var(--display); font-stretch: 120%; font-size: clamp(17px, 1.7vw, 21px); font-weight: 800; color: #fff; letter-spacing: -.01em; }
+.hero-foot span { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--steel); }
+.scroll-cue {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 30px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+}
+.scroll-cue i { display: block; width: 1px; height: 34px; background: linear-gradient(to bottom, var(--copper-bright), transparent); animation: cue 2.2s ease-in-out infinite; transform-origin: top; }
+@keyframes cue { 0%, 100% { transform: scaleY(.35); opacity: .5; } 50% { transform: scaleY(1); opacity: 1; } }
+
+/* bandeau défilant des matières */
+.ticker {
+  position: relative; z-index: 1; margin-top: clamp(30px, 4vw, 54px);
+  border-top: 1px solid rgba(255,255,255,.18); border-bottom: 1px solid rgba(255,255,255,.18);
+  background: rgba(5,9,13,.6); overflow: hidden;
+}
+.ticker-track { display: flex; width: max-content; animation: slide 36s linear infinite; }
+.ticker-track span {
+  display: inline-flex; align-items: center; padding: 14px 0;
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.84); white-space: nowrap;
+}
+.ticker-track span::after { content: "◆"; color: var(--copper-bright); font-size: 8px; margin: 0 24px; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+@keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* -------------------------------------------- typographie cinétique */
+.kinetic { background: var(--black); color: #fff; overflow: hidden; padding-block: clamp(16px, 2.4vw, 30px); border-block: 1px solid var(--dark-line); }
+.kinetic-track { display: flex; width: max-content; will-change: transform; }
+.kinetic-track b {
+  font-family: var(--display); font-stretch: 120%; font-weight: 800; text-transform: uppercase;
+  font-size: clamp(42px, 9vw, 128px); line-height: 1; letter-spacing: -.03em;
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.3); white-space: nowrap;
+  padding-right: .4em;
+}
+.kinetic-track b:nth-child(even) { color: var(--copper); -webkit-text-stroke: 0; }
+
+/* ------------------------------------------------------------- manifeste */
+.split { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: clamp(28px, 5vw, 70px); align-items: center; }
+@media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+.statement { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.9vw, 34px); line-height: 1.16; letter-spacing: -.02em; }
+.statement em { font-style: normal; color: var(--copper-bright); }
+
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(34px, 5vw, 62px); border-top: 1px solid var(--dark-line); }
+@media (max-width: 760px) { .pillars { grid-template-columns: 1fr; } }
+.pillar { padding: 30px 28px 30px 0; border-right: 1px solid var(--dark-line); min-width: 0; position: relative; }
+.pillar::before { content: ""; position: absolute; top: -1px; left: 0; width: 0; height: 2px; background: var(--copper); transition: width .6s var(--ease); }
+.pillar.in::before { width: 46px; }
+.pillar:last-child { border-right: 0; }
+@media (min-width: 761px) { .pillar + .pillar { padding-left: 28px; } }
+@media (max-width: 760px) { .pillar { border-right: 0; border-bottom: 1px solid var(--dark-line); padding-right: 0; } .pillar:last-child { border-bottom: 0; } }
+.pillar .n { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; color: var(--copper-bright); }
+.pillar h3 { margin: 14px 0 10px; color: #fff; }
+.pillar p { color: var(--dark-muted); font-size: 15px; }
+
+/* -------------------------------------------- métiers empilés (sticky) */
+.stack-cards { margin-top: clamp(34px, 4vw, 54px); display: flex; flex-direction: column; gap: 18px; }
+.metier {
+  position: relative; overflow: hidden; border-radius: 3px; isolation: isolate;
+  min-height: clamp(300px, 48vw, 460px);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: clamp(22px, 3.4vw, 42px); color: #fff;
+  box-shadow: 0 -24px 60px -30px rgba(5,9,13,.9);
+}
+@media (min-width: 761px) {
+  .stack-cards { gap: 26px; }
+  .metier { position: sticky; top: 104px; }
+  .metier:nth-child(2) { top: 122px; }
+  .metier:nth-child(3) { top: 140px; }
+  .metier:nth-child(4) { top: 158px; }
+}
+.metier img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.1s var(--ease); }
+.metier::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(to top, rgba(5,9,13,.96) 10%, rgba(5,9,13,.5) 55%, rgba(5,9,13,.2) 100%);
+}
+.metier:hover img { transform: scale(1.06); }
+.metier .tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--copper-bright); }
+.metier h3 { margin: 12px 0 10px; font-size: clamp(22px, 3vw, 36px); font-stretch: 120%; font-weight: 800; text-transform: uppercase; }
+.metier p { font-size: clamp(14px, 1.3vw, 16px); color: #CCD7E0; max-width: 46ch; }
+.metier .sweep { position: absolute; left: 0; top: 0; height: 3px; width: 0; background: var(--copper); transition: width .9s var(--ease); z-index: 2; }
+.metier.in .sweep { width: 100%; }
+
+/* ------------------------------------------------------------- matières */
+.matter-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .95fr); gap: clamp(26px, 4vw, 54px); align-items: start; }
+@media (max-width: 860px) { .matter-grid { grid-template-columns: 1fr; } }
+.matter-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--dark-line); }
+.matter-list li { border-bottom: 1px solid var(--dark-line); position: relative; }
+.matter-list li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--copper); transform: scaleY(0); transform-origin: top; transition: transform .4s var(--ease); }
+.matter-list li[aria-selected="true"]::before { transform: scaleY(1); }
+.matter-list button {
+  all: unset; box-sizing: border-box; display: flex; align-items: baseline; gap: 16px; width: 100%;
+  padding: 18px 4px; cursor: pointer; transition: padding-left .35s var(--ease);
+}
+.matter-list button:focus-visible { outline: 2px solid var(--copper-bright); outline-offset: -2px; }
+.matter-list .idx { font-family: var(--mono); font-size: 11px; color: var(--dark-muted); min-width: 26px; }
+.matter-list .nm { font-family: var(--display); font-stretch: 120%; font-weight: 700; font-size: clamp(19px, 2.3vw, 28px); color: rgba(255,255,255,.58); text-transform: uppercase; letter-spacing: -.015em; transition: color .3s var(--ease); }
+.matter-list .ex { margin-left: auto; font-size: 13px; color: var(--dark-muted); text-align: right; max-width: 46%; }
+.matter-list button:hover .nm { color: rgba(255,255,255,.88); }
+.matter-list li[aria-selected="true"] button { padding-left: 18px; }
+.matter-list li[aria-selected="true"] .nm { color: #fff; }
+.matter-view { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; background: var(--dark-2); }
+.matter-view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.1); transition: opacity .6s var(--ease), transform 7s linear; }
+.matter-view img.on { opacity: 1; transform: scale(1); }
+.matter-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 20px; z-index: 2;
+  background: linear-gradient(to top, rgba(5,9,13,.94), rgba(5,9,13,0));
+  font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #fff;
+}
+
+/* --------------------------------------------------------------- méthode */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(34px, 4vw, 56px); border-top: 2px solid var(--line); }
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+.step { padding: 30px 24px 34px 0; position: relative; min-width: 0; overflow: hidden; }
+.step::before { content: ""; position: absolute; top: -2px; left: 0; width: 0; height: 2px; background: var(--copper); transition: width .7s var(--ease); }
+.step.in::before { width: 46px; }
+.step .n {
+  font-family: var(--display); font-stretch: 120%; font-size: clamp(56px, 7vw, 92px); font-weight: 800;
+  line-height: .8; color: transparent; -webkit-text-stroke: 1.4px var(--copper); opacity: .55;
+  display: block; margin-bottom: 14px;
+}
+.step h3 { margin: 0 0 8px; }
+.step p { color: var(--muted); font-size: 14.8px; }
+
+/* ---------------------------------------------------------- bande citation */
+.quote-band { position: relative; min-height: clamp(340px, 46vw, 540px); display: flex; align-items: center; isolation: isolate; overflow: hidden; }
+.quote-band .qbg { position: absolute; inset: -12% 0; z-index: -2; will-change: transform; }
+.quote-band .qbg img { width: 100%; height: 100%; object-fit: cover; }
+.quote-band::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, rgba(5,9,13,.96) 18%, rgba(5,9,13,.5) 100%); }
+.quote-band .wrap { padding-block: clamp(54px, 7vw, 94px); }
+.quote-band blockquote { margin: 0; max-width: min(720px, 92%); }
+.quote-band .q { font-family: var(--display); font-stretch: 120%; font-weight: 800; text-transform: uppercase; font-size: clamp(27px, 4.8vw, 62px); line-height: .98; color: #fff; }
+.quote-band .q em { font-style: normal; color: var(--copper-bright); }
+.quote-band cite { display: block; margin-top: 24px; font-style: normal; font-family: var(--mono); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--steel); }
+
+/* ------------------------------------------------------------------ devis */
+.form-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(26px, 4vw, 56px); align-items: start; }
+@media (max-width: 900px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.field label { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dark-muted); }
+.field input, .field select, .field textarea {
+  font-family: var(--text); font-size: 15px; color: #fff; width: 100%;
+  background: rgba(255,255,255,.05); border: 1px solid var(--dark-line);
+  border-radius: 2px; padding: 13px;
+  transition: border-color .25s var(--ease), background .25s var(--ease);
+}
+.field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,.38); }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: #41566C; }
+.field textarea { resize: vertical; min-height: 84px; }
+.field select option { color: #0A121B; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--copper-bright); outline-offset: 1px; background: rgba(255,255,255,.09); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.preview {
+  font-family: var(--mono); font-size: 13px; line-height: 1.7; white-space: pre-wrap;
+  background: rgba(255,255,255,.04); border: 1px solid var(--dark-line); border-left: 3px solid var(--copper);
+  border-radius: 2px; padding: 18px; color: var(--steel); min-height: 150px;
+}
+.hint { font-size: 13px; color: var(--dark-muted); }
+.contact-list { list-style: none; margin: 30px 0 0; padding: 0; border-top: 1px solid var(--dark-line); }
+.contact-list li { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--dark-line); font-size: 14.6px; color: var(--dark-muted); }
+.contact-list .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--copper-bright); min-width: 92px; padding-top: 3px; flex: none; }
+
+/* -------------------------------------------------------------------- faq */
+.faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; margin-top: clamp(28px, 4vw, 44px); }
+@media (max-width: 760px) { .faq { grid-template-columns: 1fr; } }
+details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+details summary { cursor: pointer; font-weight: 600; font-size: 16.5px; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+details summary::-webkit-details-marker { display: none; }
+details summary::after { content: "+"; font-family: var(--mono); color: var(--copper-text); font-size: 19px; line-height: 1; flex: none; transition: transform .3s var(--ease); }
+details[open] summary::after { content: "–"; }
+details p { margin-top: 12px; color: var(--muted); font-size: 15px; max-width: 60ch; }
+
+/* ----------------------------------------------------------------- footer */
+footer { background: var(--black); color: #fff; }
+footer .wrap { padding-block: clamp(52px, 6vw, 84px) 30px; }
+.foot-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)); gap: 36px; }
+@media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr; } }
+footer h4 { font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--steel); margin-bottom: 14px; font-weight: 500; }
+footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+footer li, footer a { color: #C7D3DD; text-decoration: none; font-size: 14.8px; }
+footer a:hover { color: var(--copper-bright); }
+.legal { margin-top: 38px; padding-top: 20px; border-top: 1px solid var(--dark-line); display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+.legal small { font-family: var(--mono); font-size: 11.5px; color: #7B8EA0; }
+
+/* ------------------------------------------------------- bouton flottant */
+.wa-float {
+  position: fixed; z-index: 75;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 11px 22px 11px 11px; border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: linear-gradient(180deg, var(--blue-lift) 0%, var(--blue) 50%, #16242F 100%);
+  color: #fff; text-decoration: none; font-weight: 700; font-size: 15px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .36),
+    inset 0 -3px 0 rgba(0, 0, 0, .38),
+    0 7px 0 var(--blue-edge),
+    0 24px 34px -14px rgba(5, 9, 13, .85);
+  transition: transform .14s var(--ease), box-shadow .14s var(--ease);
+}
+.wa-float:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .44),
+    inset 0 -3px 0 rgba(0, 0, 0, .38),
+    0 9px 0 var(--blue-edge),
+    0 28px 38px -14px rgba(5, 9, 13, .9);
+}
+.wa-float:active {
+  transform: translateY(6px);
+  box-shadow:
+    inset 0 3px 6px rgba(0, 0, 0, .5),
+    0 1px 0 var(--blue-edge),
+    0 8px 14px -8px rgba(5, 9, 13, .8);
+}
+/* pastille en relief qui porte le pictogramme */
+.wa-float .disc {
+  position: relative; flex: none; width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(120% 120% at 32% 22%, #FFFFFF 0%, #E4EBF1 48%, #BDCAD3 100%);
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, .95),
+    inset 0 -3px 4px rgba(27, 44, 62, .32),
+    0 3px 6px rgba(5, 9, 13, .5);
+}
+.wa-float .disc::after {
+  content: ""; position: absolute; left: 14%; right: 14%; top: 7%; height: 38%;
+  border-radius: 50%; background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,0));
+  pointer-events: none;
+}
+.wa-float svg { width: 23px; height: 23px; position: relative; color: var(--blue); filter: drop-shadow(0 1px 0 rgba(255,255,255,.7)); }
+.wa-float .lbl { position: relative; }
+@media (max-width: 560px) {
+  .wa-float .lbl { display: none; }
+  .wa-float { padding: 11px; gap: 0; }
+}
+
+/* --------------------------------------------------- révélations au scroll */
+.js-anim .reveal { opacity: 0; transform: translateY(26px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
+.js-anim .reveal.in { opacity: 1; transform: none; }
+.js-anim .reveal-img { clip-path: inset(0 0 100% 0); transition: clip-path 1s var(--ease); }
+.js-anim .reveal-img.in { clip-path: inset(0 0 0 0); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  .js-anim .reveal, .js-anim .reveal-img { opacity: 1; transform: none; clip-path: none; }
+  .hero-media { inset: 0; }
+}
+</style>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar" id="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <img src="assets/logo-blanc.png" alt="Kiswendsida & Frères">
+      <span class="brand-text">
+        <b>KISWENDSIDA</b>
+        <span>&amp; FRÈRES</span>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#metiers">Nos métiers</a>
+      <a href="#matieres">Matières</a>
+      <a href="#methode">Méthode</a>
+      <a href="#devis">Contact</a>
+      <a class="btn btn--wa btn--sm" href="#devis"><span class="lbl-long">Demander un ramassage</span><span class="lbl-short">Ramassage</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================================================================ héro -->
+  <section class="hero">
+    <div class="hero-media" id="hero-media"><img src="assets/photos/hero-grue.jpg" alt="Grappin hydraulique au-dessus d'un tas de ferraille dans un parc à métaux"></div>
+    <div class="wrap">
+      <p class="kicker">Collecte · Tri · Valorisation des métaux</p>
+      <h1>
+        <span class="ln"><span>La ferraille</span></span>
+        <span class="ln"><span>a de la valeur.</span></span>
+        <span class="ln"><span><em>Nous venons la chercher.</em></span></span>
+      </h1>
+      <p class="hero-sub">Enlèvement de ferrailles et de métaux sur chantiers, sites industriels, ateliers et garages, à Casablanca et dans sa région. Camion sur site, pesée annoncée, bon d'enlèvement remis le jour même.</p>
+      <div class="hero-cta">
+        <a class="btn btn--wa" id="hero-wa" href="#devis">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.22-8.24 8.22Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.52.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+          Demander un ramassage
+        </a>
+        <a class="btn btn--outline" href="#matieres">Ce que nous rachetons</a>
+      </div>
+      <div class="hero-foot">
+        <div><b>Sur site</b><span>Camion et équipe</span></div>
+        <div><b>Pesée écrite</b><span>Bon d'enlèvement</span></div>
+        <div><b>Paiement</b><span>À l'enlèvement</span></div>
+        <div><b>Casablanca</b><span>Et sa région</span></div>
+      </div>
+      <span class="scroll-cue"><i></i> Défiler</span>
+    </div>
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track" id="ticker"></div>
+    </div>
+  </section>
+
+  <!-- =========================================================== manifeste -->
+  <section class="band band--dark">
+    <div class="wrap">
+      <div class="split">
+        <div class="reveal">
+          <p class="kicker">Notre engagement</p>
+          <h2>Le camion arrive,<br>le poids s'affiche,<br>l'argent suit.</h2>
+        </div>
+        <div class="reveal">
+          <p class="statement">Un enlèvement de ferraille, ce n'est pas un service compliqué. C'est un camion qui vient quand il l'a dit, une balance qu'on lit à deux, et <em>un papier signé des deux côtés</em>.</p>
+          <p class="lede" style="margin-top:20px">C'est tout ce que nous promettons. C'est aussi tout ce que nous tenons, lot après lot, depuis le premier coup de fil jusqu'au métal qui repart vers la fonderie.</p>
+        </div>
+      </div>
+      <div class="pillars">
+        <div class="pillar reveal">
+          <span class="n">01 / ENLÈVEMENT</span>
+          <h3>Nous nous déplaçons</h3>
+          <p>Date annoncée, camion sur site, chargement fait par notre équipe. Vous ne transportez rien, vous ne louez rien.</p>
+        </div>
+        <div class="pillar reveal">
+          <span class="n">02 / PESÉE</span>
+          <h3>Le poids est écrit</h3>
+          <p>Le prix au kilo est dit avant le chargement. Le poids est pesé, annoncé, puis consigné sur le bon d'enlèvement.</p>
+        </div>
+        <div class="pillar reveal">
+          <span class="n">03 / PAPIERS</span>
+          <h3>Rien ne part sans trace</h3>
+          <p>Bon d'enlèvement signé, facture pour les entreprises, traçabilité du lot jusqu'à l'acheteur final.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== bande cinétique -->
+  <div class="kinetic" aria-hidden="true">
+    <div class="kinetic-track" id="kinetic"></div>
+  </div>
+
+  <!-- ============================================================= métiers -->
+  <section class="band band--paper" id="metiers">
+    <div class="wrap">
+      <div class="split" style="align-items:end">
+        <div class="reveal">
+          <p class="kicker">Nos métiers</p>
+          <h2>Quatre gestes,<br>une seule chaîne.</h2>
+        </div>
+        <p class="lede reveal">De la benne posée sur votre chantier jusqu'au lot vendu à l'aciérie, tout passe par nos mains. C'est ce qui nous permet de tenir un prix et un délai sans intermédiaire.</p>
+      </div>
+      <div class="stack-cards">
+        <article class="metier reveal">
+          <span class="sweep"></span>
+          <img src="assets/photos/enlevement-site.jpg" alt="Camion et tas de ferraille sur un site d'enlèvement">
+          <span class="tag">01 — Collecte</span>
+          <h3>Enlèvement sur site</h3>
+          <p>Chantiers BTP, usines, ateliers, garages, particuliers. Nous venons avec le camion et l'équipe, nous chargeons, nous laissons la zone propre.</p>
+        </article>
+        <article class="metier reveal">
+          <span class="sweep"></span>
+          <img src="assets/photos/tri-benne.jpg" alt="Grappin chargeant une benne de métaux triés">
+          <span class="tag">02 — Tri</span>
+          <h3>Tri et récupération</h3>
+          <p>Séparation des ferreux et des non ferreux, retrait des indésirables, préparation des lots par nature de matière.</p>
+        </article>
+        <article class="metier reveal">
+          <span class="sweep"></span>
+          <img src="assets/photos/balles.jpg" alt="Balles de métal compacté alignées dans un parc">
+          <span class="tag">03 — Valorisation</span>
+          <h3>Transformation</h3>
+          <p>Coupe, compactage, conditionnement. Le lot sort calibré, prêt à repartir dans la filière de production.</p>
+        </article>
+        <article class="metier reveal">
+          <span class="sweep"></span>
+          <img src="assets/photos/camion-charge.jpg" alt="Camion chargé de balles de métal sur la route">
+          <span class="tag">04 — Négoce</span>
+          <h3>Achat, vente, importation</h3>
+          <p>Achat au poids auprès des détenteurs, revente aux aciéries et fonderies, opérations d'importation de ferrailles.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ matières -->
+  <section class="band band--dark" id="matieres">
+    <div class="wrap">
+      <div class="split" style="align-items:end;margin-bottom:clamp(26px,4vw,46px)">
+        <div class="reveal">
+          <p class="kicker">Ce que nous rachetons</p>
+          <h2>Ferreux, non ferreux,<br>et tout ce qui se trie.</h2>
+        </div>
+        <p class="lede reveal">Le prix dépend de la matière et du cours du jour : il se donne au téléphone, jamais à l'avance sur un écran. Choisissez une famille pour voir ce qu'elle recouvre.</p>
+      </div>
+      <div class="matter-grid">
+        <ul class="matter-list" id="matter-list">
+          <li aria-selected="true">
+            <button type="button" data-img="m-ferreux">
+              <span class="idx">01</span>
+              <span class="nm">Métaux ferreux</span>
+              <span class="ex">Ferraille de chantier, tôle, profilés, fonte, copeaux</span>
+            </button>
+          </li>
+          <li aria-selected="false">
+            <button type="button" data-img="m-cuivre">
+              <span class="idx">02</span>
+              <span class="nm">Non ferreux</span>
+              <span class="ex">Cuivre, laiton, aluminium, inox, plomb, zinc</span>
+            </button>
+          </li>
+          <li aria-selected="false">
+            <button type="button" data-img="m-equip">
+              <span class="idx">03</span>
+              <span class="nm">Équipements</span>
+              <span class="ex">Câbles, moteurs, batteries, radiateurs, machines</span>
+            </button>
+          </li>
+          <li aria-selected="false">
+            <button type="button" data-img="m-balles">
+              <span class="idx">04</span>
+              <span class="nm">Lots préparés</span>
+              <span class="ex">Balles compactées, lots calibrés pour aciérie</span>
+            </button>
+          </li>
+        </ul>
+        <div class="matter-view reveal-img">
+          <img id="m-ferreux" class="on" src="assets/photos/matieres-melangees.jpg" alt="Ferraille mélangée en gros plan">
+          <img id="m-cuivre" src="assets/photos/cuivre.jpg" alt="Fils de cuivre dénudés prêts au recyclage">
+          <img id="m-equip" src="assets/photos/collecte-ville.jpg" alt="Chargement d'équipements métalliques sur un camion en ville">
+          <img id="m-balles" src="assets/photos/balles.jpg" alt="Balles de métal compacté">
+          <p class="matter-cap" id="matter-cap">Métaux ferreux — achat au poids, après tri</p>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:22px">Une matière ne figure pas dans cette liste ? Envoyez une photo du lot : nous répondons oui ou non dans la journée.</p>
+    </div>
+  </section>
+
+  <!-- ====================================================== bande citation -->
+  <section class="quote-band">
+    <div class="qbg" id="qbg"><img src="assets/photos/balles.jpg" alt=""></div>
+    <div class="wrap">
+      <blockquote class="reveal">
+        <p class="q">Le métal ne se jette pas.<br><em>Il se remet au travail.</em></p>
+        <cite>Kiswendsida &amp; Frères — Anfa, Casablanca</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ============================================================= méthode -->
+  <section class="band band--paper" id="methode">
+    <div class="wrap">
+      <div class="split" style="align-items:end">
+        <div class="reveal">
+          <p class="kicker">Comment ça se passe</p>
+          <h2>Du premier message<br>au paiement.</h2>
+        </div>
+        <p class="lede reveal">Quatre étapes, dans cet ordre, pour un particulier comme pour un chantier de plusieurs tonnes.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="n">01</span>
+          <h3>Vous décrivez le lot</h3>
+          <p>Ville, nature du métal, poids estimé. Une photo suffit souvent à tout dire.</p>
+        </div>
+        <div class="step reveal">
+          <span class="n">02</span>
+          <h3>Nous annonçons un prix</h3>
+          <p>Prix au kilo selon la matière et le cours du jour, et un créneau d'enlèvement.</p>
+        </div>
+        <div class="step reveal">
+          <span class="n">03</span>
+          <h3>Le camion vient charger</h3>
+          <p>Notre équipe charge, trie si nécessaire, et pèse devant vous.</p>
+        </div>
+        <div class="step reveal">
+          <span class="n">04</span>
+          <h3>Bon, facture, paiement</h3>
+          <p>Le bon d'enlèvement est signé des deux côtés. Le paiement suit la pesée.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================== devis -->
+  <section class="band band--black" id="devis">
+    <div class="wrap">
+      <div class="form-grid">
+        <div>
+          <p class="kicker">Demande d'enlèvement</p>
+          <h2>Dites-nous où<br>et quand.</h2>
+          <p class="lede" style="margin-top:18px">Quatre champs : votre message WhatsApp s'écrit tout seul, vous n'avez plus qu'à l'envoyer. Nous répondons avec un prix au kilo et un créneau.</p>
+          <form id="wa-form" style="margin-top:30px" novalidate>
+            <div class="stack">
+              <div class="form-row">
+                <div class="field">
+                  <label for="f-ville">Ville ou quartier</label>
+                  <input id="f-ville" name="ville" type="text" placeholder="Ex. Aïn Sebaâ, Casablanca" autocomplete="address-level2">
+                </div>
+                <div class="field">
+                  <label for="f-metal">Nature du métal</label>
+                  <select id="f-metal" name="metal">
+                    <option>Ferraille de chantier</option>
+                    <option>Tôle et profilés</option>
+                    <option>Fonte</option>
+                    <option>Cuivre</option>
+                    <option>Laiton</option>
+                    <option>Aluminium</option>
+                    <option>Inox</option>
+                    <option>Câbles, moteurs, batteries</option>
+                    <option>Lot mélangé, à trier</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="field">
+                  <label for="f-poids">Poids estimé</label>
+                  <input id="f-poids" name="poids" type="text" inputmode="numeric" placeholder="Ex. 800 kg">
+                </div>
+                <div class="field">
+                  <label for="f-delai">Quand</label>
+                  <select id="f-delai" name="delai">
+                    <option>Dès que possible</option>
+                    <option>Cette semaine</option>
+                    <option>La semaine prochaine</option>
+                    <option>Enlèvements réguliers</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="f-note">Précisions (facultatif)</label>
+                <textarea id="f-note" name="note" placeholder="Accès camion, étage, horaires du site, matériel à démonter…"></textarea>
+              </div>
+              <div class="hero-cta" style="margin-top:2px">
+                <a class="btn btn--wa" id="send-wa" href="#devis">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.22-8.24 8.22Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.52.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+                  Envoyer sur WhatsApp
+                </a>
+                <button class="btn btn--outline" type="button" id="copy-msg">Copier le message</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div>
+          <p class="kicker">Votre message</p>
+          <div class="preview" id="preview" aria-live="polite"></div>
+          <p class="hint" id="copy-state" style="margin-top:12px">Aucune donnée n'est enregistrée sur ce site : le message part directement dans votre WhatsApp.</p>
+          <ul class="contact-list">
+            <li><span class="k">Siège</span><span>265, Boulevard Zerktouni, 9<sup>e</sup> étage, appartement n°92, Anfa — Casablanca</span></li>
+            <li><span class="k">WhatsApp</span><span id="wa-display">+212 6 __ __ __ __</span></li>
+            <li><span class="k">Horaires</span><span>Lundi – samedi, [__ h __ – __ h __]</span></li>
+            <li style="border-bottom:0"><span class="k">Zone</span><span>Casablanca et sa région ; au-delà, sur devis</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= faq -->
+  <section class="band band--paper2">
+    <div class="wrap">
+      <p class="kicker">Questions fréquentes</p>
+      <h2 class="reveal">Ce qu'on nous demande<br>avant d'appeler.</h2>
+      <div class="faq">
+        <div>
+          <details open>
+            <summary>Vous déplacez-vous pour de petits volumes ?</summary>
+            <p>Oui, dès que le lot justifie un passage du camion. Dites-nous le poids estimé : nous répondons franchement, et nous proposons un regroupement si c'est plus rentable pour vous.</p>
+          </details>
+          <details>
+            <summary>Quel est votre prix au kilo ?</summary>
+            <p>Il dépend de la matière et du cours du jour. Nous ne l'affichons pas sur le site pour ne jamais annoncer un prix faux : il vous est donné avant le chargement, et il ne change pas après la pesée.</p>
+          </details>
+          <details>
+            <summary>Qui charge la ferraille ?</summary>
+            <p>Notre équipe, avec son matériel. Vous n'avez rien à transporter ni à préparer, sauf si le lot demande un démontage : dans ce cas, nous le disons avant de venir.</p>
+          </details>
+        </div>
+        <div>
+          <details>
+            <summary>Quels documents remettez-vous ?</summary>
+            <p>Un bon d'enlèvement signé des deux côtés, avec la date, la nature du lot, le poids net et le montant. Une facture suit pour les entreprises.</p>
+          </details>
+          <details>
+            <summary>Travaillez-vous avec les entreprises ?</summary>
+            <p>Oui. Chantiers BTP, usines, ateliers et garages : enlèvements programmés, interlocuteur unique, documents conformes pour votre comptabilité.</p>
+          </details>
+          <details>
+            <summary>Où part le métal ensuite ?</summary>
+            <p>Il est trié, préparé, puis revendu aux aciéries, fonderies et négociants. Le métal repart vers la production : c'est le sens de notre activité.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= cta -->
+  <section class="band band--dark">
+    <div class="wrap" style="padding-block:clamp(46px,5vw,74px)">
+      <div class="split" style="align-items:center">
+        <div>
+          <h2>Un lot à enlever<br>cette semaine ?</h2>
+          <p class="lede" style="margin-top:14px">Un message, une photo, et nous revenons vers vous avec un prix et un créneau.</p>
+        </div>
+        <div class="hero-cta" style="margin-top:0">
+          <a class="btn btn--wa" id="cta-wa" href="#devis">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.22-8.24 8.22Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.52.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+            Écrire sur WhatsApp
+          </a>
+          <a class="btn btn--outline" href="#devis">Remplir la demande</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="assets/logo-blanc.png" alt="Kiswendsida & Frères" style="height:92px;width:auto;margin-bottom:18px">
+        <p style="color:#C7D3DD;font-size:15px;max-width:42ch">Achat, vente, collecte, tri, recyclage, récupération, transformation, valorisation, commerce et importation de ferrailles.</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>265, Boulevard Zerktouni<br>9<sup>e</sup> étage, appartement n°92<br>Anfa — Casablanca</li>
+          <li><span id="wa-display-2">+212 6 __ __ __ __</span></li>
+          <li>[adresse e-mail]</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Le site</h4>
+        <ul>
+          <li><a href="#metiers">Nos métiers</a></li>
+          <li><a href="#matieres">Matières rachetées</a></li>
+          <li><a href="#methode">Méthode</a></li>
+          <li><a href="#devis">Demander un ramassage</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <small>ICE [__] · RC [__] · Casablanca</small>
+      <small>Identité de marque et site : Kobedy Web</small>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" id="float-wa" href="#devis" aria-label="Écrire sur WhatsApp">
+  <i class="disc"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2Zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.37c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.41a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.22-8.24 8.22Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.04 0 1.2.87 2.36.99 2.52.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg></i>
+  <span class="lbl">WhatsApp</span>
+</a>
+
+<script>
+/* ------------------------------------------------------------------------
+   NUMÉRO WHATSAPP — à remplacer par le numéro réel du gérant.
+   Format international sans « + » ni espaces, ex. 212612345678.
+   Tant que la chaîne est vide, les boutons ouvrent WhatsApp avec le message
+   pré-rempli mais sans destinataire.
+------------------------------------------------------------------------- */
+var WA_NUMBER = '';
+var WA_DISPLAY = '+212 6 __ __ __ __';
+
+(function () {
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- bandeaux répétés ------------------------------------------------ */
+  var matieres = ['Ferraille de chantier', 'Tôle', 'Profilés', 'Fonte', 'Copeaux', 'Cuivre',
+                  'Laiton', 'Aluminium', 'Inox', 'Plomb', 'Zinc', 'Câbles', 'Moteurs',
+                  'Batteries', 'Radiateurs', 'Machines hors service'];
+  var ticker = document.getElementById('ticker');
+  if (ticker) {
+    var t = matieres.map(function (m) { return '<span>' + m + '</span>'; }).join('');
+    ticker.innerHTML = t + t;
+  }
+  var kinetic = document.getElementById('kinetic');
+  var kWords = ['Ferraille', 'Cuivre', 'Laiton', 'Aluminium', 'Fonte', 'Inox'];
+  if (kinetic) {
+    var k = kWords.map(function (w) { return '<b>' + w + '</b>'; }).join('');
+    kinetic.innerHTML = k + k + k;
+  }
+
+  /* --- sélecteur de matières ------------------------------------------- */
+  var caps = {
+    'm-ferreux': 'Métaux ferreux — achat au poids, après tri',
+    'm-cuivre': 'Non ferreux — cuivre, laiton, aluminium, inox',
+    'm-equip': 'Équipements — câbles, moteurs, batteries',
+    'm-balles': 'Lots préparés — balles calibrées pour aciérie'
+  };
+  var list = document.getElementById('matter-list');
+  var cap = document.getElementById('matter-cap');
+  if (list) {
+    list.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('button[data-img]') : null;
+      if (!btn) return;
+      var id = btn.getAttribute('data-img');
+      Array.prototype.forEach.call(list.children, function (li) {
+        li.setAttribute('aria-selected', li.contains(btn) ? 'true' : 'false');
+      });
+      Object.keys(caps).forEach(function (key) {
+        var img = document.getElementById(key);
+        if (img) img.classList.toggle('on', key === id);
+      });
+      if (cap) cap.textContent = caps[id] || '';
+    });
+  }
+
+  /* --- formulaire WhatsApp --------------------------------------------- */
+  var form = document.getElementById('wa-form');
+  var preview = document.getElementById('preview');
+  var state = document.getElementById('copy-state');
+  var defaultState = state ? state.textContent : '';
+
+  ['wa-display', 'wa-display-2'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = WA_DISPLAY;
+  });
+
+  function val(id, fallback) {
+    var el = document.getElementById(id);
+    var v = el ? String(el.value || '').trim() : '';
+    return v || fallback;
+  }
+
+  function message() {
+    var lines = [
+      'Bonjour, je souhaite un enlèvement de métaux.',
+      '',
+      'Ville : ' + val('f-ville', '___'),
+      'Métal : ' + val('f-metal', '___'),
+      'Poids estimé : ' + val('f-poids', '___'),
+      'Quand : ' + val('f-delai', '___')
+    ];
+    var note = val('f-note', '');
+    if (note) lines.push('Précisions : ' + note);
+    lines.push('', 'Demande envoyée depuis kiswendsida-freres.ma');
+    return lines.join('\n');
+  }
+
+  function link() {
+    var text = encodeURIComponent(message());
+    return WA_NUMBER ? 'https://wa.me/' + WA_NUMBER + '?text=' + text
+                     : 'https://wa.me/?text=' + text;
+  }
+
+  function render() {
+    if (preview) preview.textContent = message();
+    ['hero-wa', 'send-wa', 'cta-wa', 'float-wa'].forEach(function (id) {
+      var a = document.getElementById(id);
+      if (!a) return;
+      a.href = link();
+      a.target = '_blank';
+      a.rel = 'noopener';
+    });
+  }
+
+  if (form) {
+    form.addEventListener('input', render);
+    form.addEventListener('change', render);
+    form.addEventListener('submit', function (e) { e.preventDefault(); render(); });
+  }
+
+  var copyBtn = document.getElementById('copy-msg');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      function done(ok) {
+        if (!state) return;
+        state.textContent = ok ? 'Message copié. Collez-le dans WhatsApp.'
+                               : 'Copie impossible : sélectionnez le texte ci-dessus pour le copier.';
+        setTimeout(function () { state.textContent = defaultState; }, 4000);
+      }
+      try {
+        navigator.clipboard.writeText(message()).then(function () { done(true); },
+                                                      function () { done(false); });
+      } catch (err) { done(false); }
+    });
+  }
+
+  render();
+
+  /* --- révélations au défilement --------------------------------------- */
+  var items = Array.prototype.slice.call(document.querySelectorAll('.reveal, .reveal-img'));
+  if (!reduce && items.length && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('js-anim');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    items.forEach(function (el) { io.observe(el); });
+    setTimeout(function () { items.forEach(function (el) { el.classList.add('in'); }); }, 2200);
+  } else {
+    items.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* --- défilement : jauge, parallaxe, typo cinétique -------------------- */
+  var progress = document.getElementById('progress');
+  var topbar = document.getElementById('topbar');
+  var heroMedia = document.getElementById('hero-media');
+  var qbg = document.getElementById('qbg');
+  var quote = document.querySelector('.quote-band');
+  var ticking = false;
+
+  function onScroll() {
+    var y = window.pageYOffset || document.documentElement.scrollTop;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+    if (topbar) topbar.classList.toggle('shrunk', y > 80);
+
+    if (!reduce) {
+      if (heroMedia && y < window.innerHeight * 1.4) {
+        heroMedia.style.transform = 'translate3d(0,' + (y * 0.22) + 'px,0)';
+      }
+      if (kinetic) {
+        kinetic.style.transform = 'translate3d(' + (-((y * 0.14) % (kinetic.scrollWidth / 3))) + 'px,0,0)';
+      }
+      if (qbg && quote) {
+        var r = quote.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < window.innerHeight) {
+          var p = (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight;
+          qbg.style.transform = 'translate3d(0,' + (p * -42) + 'px,0)';
+        }
+      }
+    }
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
