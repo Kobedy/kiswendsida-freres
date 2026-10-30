@@ -294,17 +294,25 @@ p { margin: 0; }
 .stack-cards { margin-top: clamp(34px, 4vw, 54px); display: flex; flex-direction: column; gap: 18px; }
 .metier {
   position: relative; overflow: hidden; border-radius: 3px; isolation: isolate;
-  min-height: clamp(300px, 48vw, 460px);
+  min-height: clamp(280px, 44vw, 440px);
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: clamp(22px, 3.4vw, 42px); color: #fff;
   box-shadow: 0 -24px 60px -30px rgba(5,9,13,.9);
 }
+/* empilement : le texte passe en haut de la carte, pour rester lisible
+   dans le bandeau que la carte suivante laisse découvert. */
 @media (min-width: 761px) {
   .stack-cards { gap: 26px; }
-  .metier { position: sticky; top: 104px; }
-  .metier:nth-child(2) { top: 122px; }
-  .metier:nth-child(3) { top: 140px; }
-  .metier:nth-child(4) { top: 158px; }
+  .metier {
+    position: sticky; top: 92px; justify-content: flex-start;
+    min-height: 0; height: min(440px, calc(100vh - 150px));
+  }
+  .metier:nth-child(2) { top: 104px; }
+  .metier:nth-child(3) { top: 116px; }
+  .metier:nth-child(4) { top: 128px; }
+  .metier::after {
+    background: linear-gradient(to bottom, rgba(5,9,13,.94) 6%, rgba(5,9,13,.5) 52%, rgba(5,9,13,.28) 100%);
+  }
 }
 .metier img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.1s var(--ease); }
 .metier::after {
@@ -404,6 +412,16 @@ p { margin: 0; }
 .faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; margin-top: clamp(28px, 4vw, 44px); }
 @media (max-width: 760px) { .faq { grid-template-columns: 1fr; } }
 details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+@media (max-width: 900px), (hover: none) {
+  /* cibles tactiles : au moins 44 px de haut, sur tout appareil sans souris */
+  details { padding: 4px 0; }
+  details summary { padding: 15px 0; }
+  footer ul { gap: 0; }
+  footer li { padding-block: 7px; }
+  footer li a { display: inline-block; padding-block: 4px; }
+  .contact-list li { padding: 16px 0; }
+  .brand { min-height: 44px; }
+}
 details summary { cursor: pointer; font-weight: 600; font-size: 16.5px; list-style: none; display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
 details summary::-webkit-details-marker { display: none; }
 details summary::after { content: "+"; font-family: var(--mono); color: var(--copper-text); font-size: 19px; line-height: 1; flex: none; transition: transform .3s var(--ease); }
