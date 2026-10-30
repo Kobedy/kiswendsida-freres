@@ -1,5 +1,17 @@
+<!doctype html>
+<html lang="fr">
+<head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kiswendsida & Frères</title>
+<meta name="description" content="Enlèvement de ferrailles et de métaux sur chantiers, sites industriels, ateliers et garages, à Casablanca et dans sa région. Camion sur site, pesée annoncée, bon d'enlèvement remis le jour même.">
+<meta name="theme-color" content="#05090D">
+<link rel="icon" href="assets/picto-camion.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kobedy.github.io/kiswendsida-freres/">
+<meta property="og:title" content="Kiswendsida &amp; Frères — collecte, tri et valorisation des métaux">
+<meta property="og:description" content="Enlèvement de ferrailles et de métaux sur chantiers, sites industriels, ateliers et garages, à Casablanca et dans sa région. Camion sur site, pesée annoncée, bon d'enlèvement remis le jour même.">
+<meta property="og:image" content="https://kobedy.github.io/kiswendsida-freres/assets/photos/hero-grue.jpg">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,7 +235,9 @@ p { margin: 0; }
 .hero .wrap { padding-block: clamp(58px, 11vw, 136px) 0; }
 .hero h1 { max-width: 16ch; }
 .hero h1 em { font-style: normal; color: var(--copper-bright); }
-.ln { display: block; overflow: hidden; }
+/* le masque d'animation descend sous la ligne de base, sinon l'interligne
+   serre coupe le bas des lettres quand une ligne se replie en deux */
+.ln { display: block; overflow: hidden; padding-bottom: .45em; margin-bottom: -.45em; }
 .ln > span { display: block; animation: rise .9s var(--ease) both; }
 .ln:nth-child(2) > span { animation-delay: .07s; }
 .ln:nth-child(3) > span { animation-delay: .14s; }
@@ -235,6 +249,10 @@ p { margin: 0; }
   padding-top: 26px; border-top: 1px solid rgba(255,255,255,.18);
 }
 .hero-foot div { min-width: 0; }
+@media (max-width: 620px) {
+  .hero-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+  .hero-foot span { letter-spacing: .1em; }
+}
 .hero-foot b { display: block; font-family: var(--display); font-stretch: 120%; font-size: clamp(17px, 1.7vw, 21px); font-weight: 800; color: #fff; letter-spacing: -.01em; }
 .hero-foot span { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--steel); }
 .scroll-cue {
@@ -506,6 +524,8 @@ footer a:hover { color: var(--copper-bright); }
   .hero-media { inset: 0; }
 }
 </style>
+</head>
+<body>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
@@ -1094,3 +1114,5 @@ var WA_DISPLAY = '+212 6 __ __ __ __';
   onScroll();
 })();
 </script>
+</body>
+</html>
